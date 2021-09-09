@@ -1,0 +1,18 @@
+---
+title: "Converter"
+author: "Hunter Bartelt"
+date: "9/9/2021"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+rmarkdown:::convert_ipynb("~/Documents/Github/BIO550-640/QTL-carbaryl.ipynb")
+rmarkdown:::convert_ipynb("~/Documents/Github/BIO550-640/QTL_carbaryl-summer.ipynb")
+rmarkdown:::convert_ipynb("~/Documents/Github/BIO550-640/QTL_Sex.ipynb")
+
+```

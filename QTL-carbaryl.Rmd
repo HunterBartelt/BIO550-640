@@ -1,0 +1,109 @@
+---
+title: An R Markdown document converted from "~/Documents/Github/BIO550-640/QTL-carbaryl.ipynb"
+output: html_document
+---
+
+```{r}
+#install.packages("rcompanion")
+#install.packages("qtl2")
+#install.packages("LinkageMapView")
+```
+
+```{r}
+library("qtl2")
+library("rcompanion")
+library("LinkageMapView")
+```
+
+```{r}
+female <- read_cross2("female_control-carbaryl.yaml")
+map <- insert_pseudomarkers(female$gmap, step=1)
+pr <- calc_genoprob(female, map, error_prob=0.002,cores=0)
+summary(female)
+```
+
+```{r}
+#lmv.linkage.plot("male_linkage.csv","male_linkage.pdf",pdf.width=82, pdf.height=19)
+```
+
+```{r}
+plotNormalHistogram(female$pheno[,1])
+```
+
+```{r}
+operm <- scan1perm(pr, female$pheno, n_perm=1000, cores=0)
+out <- scan1(pr, female$pheno, cores=0)
+write.csv(out,"LOD_female.csv")
+ymx <- maxlod(out)
+summary(operm)
+lod <- summary(operm)
+par(mar = c(4,4,0.3,0.3))
+plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0,ymx*1.02))
+abline(h= lod, col = "red")
+legend("topleft", lwd=1, col="slateblue", colnames(out),bg="gray90")
+```
+
+```{r}
+hist(operm[,'Carbrayl_Sensitivity'],breaks = 50,xlab= "LOD",main= "LOD Scores with threshold in red")
+abline(v=lod,col='red',lwd=2)
+```
+
+```{r}
+shuffled_order <- sample(rownames(female$pheno))
+pheno_permuted <- female$pheno
+rownames(pheno_permuted) <- shuffled_order
+out_permuted <- scan1(pr,pheno_permuted,cores=0)
+plot(out_permuted,map)
+```
+
+```{r}
+find_peaks(out,map,threshold=lod,drop=1.5,expand2markers=TRUE)
+find_peaks(out,map,threshold=lod,prob=.95,expand2markers=TRUE)
+```
+
+```{r}
+male <- read_cross2("male_control-carbryl.yaml")
+map <- insert_pseudomarkers(male$gmap, step=1)
+pr <- calc_genoprob(male, map, error_prob=0.002,cores=0)
+summary(male)
+```
+
+```{r}
+#lmv.linkage.plot("female_linkage.csv","female_linkage.pdf",pdf.width=82, pdf.height=19)
+```
+
+```{r}
+plotNormalHistogram(male$pheno[,1])
+```
+
+```{r}
+operm <- scan1perm(pr, male$pheno, n_perm=1000, cores=0)
+out <- scan1(pr, male$pheno, cores=0)
+write.csv(out,"LOD_male.csv")
+ymx <- maxlod(out)
+summary(operm)
+lod <- summary(operm)
+par(mar = c(4,4,0.3,0.3))
+plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0,ymx*1.02))
+abline(h= lod, col = "red")
+legend("topleft", lwd=1, col="slateblue", colnames(out),bg="gray90")
+```
+
+```{r}
+hist(operm[,'Carbryl_Sensitivity'],breaks = 50,xlab= "LOD",main= "LOD Scores with threshold in red")
+abline(v=lod,col='red',lwd=2)
+```
+
+```{r}
+shuffled_order <- sample(rownames(male$pheno))
+pheno_permuted <- male$pheno
+rownames(pheno_permuted) <- shuffled_order
+out_permuted <- scan1(pr,pheno_permuted,cores=0)
+plot(out_permuted,map)
+```
+
+```{r}
+find_peaks(out,map,threshold=lod,drop=1.5,expand2markers=TRUE)
+find_peaks(out,map,threshold=lod,prob=.95,expand2markers=TRUE)
+```
+
