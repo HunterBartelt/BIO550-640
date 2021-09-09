@@ -1,0 +1,14 @@
+#Male
+crosstype: bc
+geno: male_geno.csv
+pheno: pheno_carbaryl_summer.csv
+gmap: male_gmap.csv
+alleles:
+- 'n'
+- 'p'
+genotypes:
+  nn: 1
+  np: 2
+na.strings:
+- '--'
+- 'NA'

@@ -1,0 +1,14 @@
+#Female
+crosstype: bc
+geno: female_geno.csv
+pheno: pheno_sex.csv
+gmap: female_gmap.csv
+alleles:
+- l
+- m
+genotypes:
+  ll: 1
+  lm: 2
+na.strings:
+- '--'
+- NA
